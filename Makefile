@@ -22,7 +22,8 @@ WHITE='\e[1;37m'        # White
 UCYAN='\e[4;36m'        # Cyan
 
 all:
-
+	@printf "$(OK_COLOR)==== Launch main application ====$(NO_COLOR)\n"
+	$(PYTHON) main.py;
 
 freeze:
 	@$(PIP) freeze
@@ -30,13 +31,13 @@ freeze:
 help:
 	@echo -e "$(OK_COLOR)==== All commands of ${name} configuration ====$(NO_COLOR)"
 	@echo -e "$(WARN_COLOR)- make freeze		        	: Pip freeze command"
-	@echo -e "$(WARN_COLOR)- make				        : Launch"
+	@echo -e "$(WARN_COLOR)- make				        : Launch main script"
 	@echo -e "$(WARN_COLOR)- make help				: Makefile commands reference"
 	@echo -e "$(WARN_COLOR)- make install <libname>		: Launch pip install"
-	@echo -e "$(WARN_COLOR)- make launch <script>			: Launch python script"
 	@echo -e "$(WARN_COLOR)- make generate				: Generate new gRPC with proto"
 	@echo -e "$(WARN_COLOR)- make push				: Push code to repository"
 	@echo -e "$(WARN_COLOR)- make req				: Install pip requirements"
+	@echo -e "$(WARN_COLOR)- make run <script>			: Launch python script"
 	@echo -e "$(WARN_COLOR)- make venv				: Create virtual environment"
 	@echo -e "$(WARN_COLOR)- make clean				: Remove python cache"
 	@echo -e "$(WARN_COLOR)- make fclean				: Remove venv configuration$(NO_COLOR)"
@@ -54,18 +55,6 @@ install:
 		echo "$(ERROR_COLOR)Enter the library name!$(NO_COLOR)\n"; \
 	fi
 
-launch:
-	@printf "$(OK_COLOR)==== Starting the script ${name} ====$(NO_COLOR)\n"
-	@$(eval args := $(words $(filter-out --,$(MAKECMDGOALS))))
-	@if [ "${args}" -eq 2 ]; then \
-		echo "$(OK_COLOR) Launch script ${APPNAME}$(NO_COLOR)\n"; \
-		$(PYTHON) ${APPNAME}; \
-	elif [ "${args}" -gt 2 ]; then \
-		echo "$(ERROR_COLOR)The script name must not contain spaces!$(NO_COLOR)\n"; \
-	else \
-		echo "$(ERROR_COLOR)Enter the script name!$(NO_COLOR)\n"; \
-	fi
-
 push:
 	@bash push.sh
 
@@ -77,6 +66,18 @@ req:
 		echo "Environment is absent"; \
 		echo "In first run the command:"; \
 		echo "make venv"; \
+	fi
+
+run:
+	@printf "$(OK_COLOR)==== Starting the script ${name} ====$(NO_COLOR)\n"
+	@$(eval args := $(words $(filter-out --,$(MAKECMDGOALS))))
+	@if [ "${args}" -eq 2 ]; then \
+		echo "$(OK_COLOR) Launch script ${APPNAME}$(NO_COLOR)\n"; \
+		$(PYTHON) ${APPNAME}; \
+	elif [ "${args}" -gt 2 ]; then \
+		echo "$(ERROR_COLOR)The script name must not contain spaces!$(NO_COLOR)\n"; \
+	else \
+		echo "$(ERROR_COLOR)Enter the script name!$(NO_COLOR)\n"; \
 	fi
 
 venv:
