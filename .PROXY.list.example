@@ -1,3 +1,7 @@
-194.28.210.149:9306:tc7eBJ:aoNq22
-194.28.210.156:9080:tc7eBJ:aoNq22
-194.28.210.64:9329:tc7eBJ:aoNq22
+# Rename this file to .PROXY.list
+# and paste your socks/proxy here
+# Format - IP:PORT:Login:Password
+# Or IP:PORT only if has no login
+# One line - one proxy.  Example:
+
+192.168.21.01:9306:login:password
