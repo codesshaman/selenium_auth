@@ -1,4 +1,6 @@
-def pd():
+import functools
+
+def pd(func=None):
     """Proxy decorator"""
     from antidetect.proxy_settings import SetProxy
     from core.settings import proxy

@@ -1,8 +1,9 @@
+from antidetect.proxy_settings import SetProxy
 from fake_useragent import UserAgent
 from selenium_stealth import stealth
+from core.settings import proxy
 from selenium import webdriver
 from core.debug import dd
-from core.proxy import pd
 import functools
 
 
@@ -38,9 +39,28 @@ class ChromeOptions:
         self.webdriver = webdriver
         self.options = webdriver.ChromeOptions()
 
+    def set_proxy(self):
+        if proxy:
+            set_proxy_instance = SetProxy()
+            proxy_array = set_proxy_instance.get_proxy()
+            if len(proxy_array) == 4:
+                user = proxy_array[2]
+                pswd = proxy_array[3]
+                host = proxy_array[0]
+                port = proxy_array[1]
+                proxy_addr = f"{user}:{pswd}@{host}:{port}"
+                print(proxy_addr)
+                self.options.add_argument(f'--proxy-server=http://{proxy_addr}')
+            else:
+                host = proxy_array[0]
+                port = proxy_array[1]
+                proxy_addr = f"{host}:{port}"
+                self.options.add_argument(f'--proxy-server=http://{proxy_addr}')
+        else:
+            print("WARNING! Proxy is not set!")
+
     @dd
-    # @pd
-    @options_decorator("--mute-audio", "")
+    # @options_decorator("--mute-audio", "")
     @options_decorator("start-maximized", "")
     @options_decorator("user-agent", ua_generator())
     # @options_decorator("--disable-notifications", "")
@@ -50,6 +70,7 @@ class ChromeOptions:
     def get_browser(self):
         driver = self.webdriver.Chrome(options=self.options)
         driver.execute_script("Object.defineProperty(navigator, 'webdriver', {get: () => undefined})")
+        self.set_proxy()
         stealth(driver,
             languages=["en-US", "en"],
             vendor="Google Inc.",
