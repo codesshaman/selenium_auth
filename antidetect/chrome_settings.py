@@ -1,10 +1,10 @@
 from fake_useragent import UserAgent
 from selenium_stealth import stealth
 from selenium import webdriver
-from core.debug import debug
+from core.debug import dd
 
 
-@debug
+@dd
 def ua_generator():
     """Generate random fake user-agent"""
     ua = UserAgent(browsers=["chrome"])
@@ -16,37 +16,37 @@ class ChromeOptions:
         self.webdriver = webdriver
         self.options = webdriver.ChromeOptions()
 
-    @debug
+    @dd
     def user_agent_generator(self):
         """Generate fake user-agent"""
         self.options.add_argument("user-agent=" + ua_generator())
 
-    @debug
+    @dd
     def disable_browser_volume(self):
         """Disable browser volume"""
         self.options.add_argument("--mute-audio")
 
-    @debug
+    @dd
     def browser_start_maximized(self):
         """Open browser to full screen"""
         self.options.add_argument("start-maximized")
 
-    @debug
+    @dd
     def disable_browser_notifications(self):
         """Disable browser notification"""
         self.options.add_argument("--disable-notifications")
 
-    @debug
+    @dd
     def disable_automation_control(self):
         """Disable the AutomationControlled flag"""
         self.options.add_argument("--disable-blink-features=AutomationControlled")
 
-    @debug
+    @dd
     def disable_enable_automation_switches(self):
         """Exclude enable-automation switches"""
         self.options.add_experimental_option("excludeSwitches", ["enable-automation"])
 
-    @debug
+    @dd
     def disable_user_automation_extension(self):
         """Disable userAutomationExtension"""
         self.options.add_experimental_option("useAutomationExtension", False)

@@ -1,4 +1,5 @@
-def debug(func):
+def dd(func):
+    """Debug decorator"""
     from core.settings import debug 
     def wrapper(*args, **kwargs):
         if debug == True:

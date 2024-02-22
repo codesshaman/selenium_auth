@@ -1,6 +1,7 @@
+from core.debug import dd
 import os
 
-
+@dd
 def read_proxy_from_file(file_path):
     parent_dir = os.path.abspath(os.path.join(file_path, os.pardir))
     file_to_read = os.path.join(parent_dir, file_path)
@@ -20,7 +21,8 @@ class SetProxy:
         self.proxy = []
         self.content = ""
 
+    @dd
     def read_proxy_file(self):
         self.content = read_proxy_from_file(self.path)
-    
+        print(self.content)
     

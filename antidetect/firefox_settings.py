@@ -1,10 +1,10 @@
 from fake_useragent import UserAgent
 from selenium_stealth import stealth
 from selenium import webdriver
-from core.debug import debug
+from core.debug import dd
 
 
-@debug
+@dd
 def ua_generator():
     """Generate random fake user-agent"""
     ua = UserAgent(browsers=["firefox"])
@@ -16,37 +16,37 @@ class FirefoxOptions:
         self.webdriver = webdriver
         self.options = webdriver.FirefoxOptions()
 
-    @debug
+    @dd
     def user_agent_generator(self):
         """Generate fake user-agent"""
         self.options.set_preference("general.useragent.override", ua_generator())
 
-    @debug
+    @dd
     def disable_webdriver_flag(self):
         """Disable the webdriver flag"""
         self.options.set_preference("dom.webdriver.enabled", False)
 
-    @debug
+    @dd
     def disable_enable_automation_switches(self):
         """Exclude enable-automation switches"""
         self.options.set_preference("devtools.jsonview.enabled", False)
 
-    @debug
+    @dd
     def disable_user_automation_extension(self):
         """Disable userAutomationExtension"""
         self.options.set_preference("extensions.legacy.enabled", False)
 
-    @debug
+    @dd
     def disable_webnotifications_switches(self):
         """Disable web notification"""
         self.options.set_preference("devtools.dom.webnotifications.enabled", False)
 
-    @debug
+    @dd
     def disable_browser_volume(self):
         """Disable browser volume"""
         self.options.set_preference("media.volume_scale", "0.0")
 
-    @debug
+    @dd
     def get_browser(self):
         self.user_agent_generator()
         self.disable_webdriver_flag()
