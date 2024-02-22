@@ -9,10 +9,6 @@ import time
 options = ChromeOptions(webdriver)
 browser = options.get_browser()
 
- 
-# browser.get("https://www.google.com")
-
-# browser = webdriver.Chrome()
 browser.get('https://intoli.com/blog/not-possible-to-block-chrome-headless/chrome-headless-test.html')
 time_now = datetime.datetime.now()
 browser.save_screenshot('screenshots/' + str(time_now) + '.png')
