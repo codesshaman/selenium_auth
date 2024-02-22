@@ -51,7 +51,7 @@ class ChromeOptions:
         """Disable userAutomationExtension"""
         self.options.add_experimental_option("useAutomationExtension", False)
 
-    @debug
+    @dd
     def get_browser(self):
         self.user_agent_generator()
         self.disable_browser_volume()
