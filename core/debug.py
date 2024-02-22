@@ -1,6 +1,6 @@
 def dd(func):
     """Debug decorator"""
-    from core.settings import debug 
+    from core.settings import debug
     def wrapper(*args, **kwargs):
         if debug == True:
             print(f"Function/method [ {func.__name__} ] is calling")

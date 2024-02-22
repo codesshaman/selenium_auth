@@ -2,7 +2,18 @@ from fake_useragent import UserAgent
 from selenium_stealth import stealth
 from selenium import webdriver
 from core.debug import dd
+import functools
 
+
+@dd
+def options_decorator(key, value):
+    def decorator(func):
+        @functools.wraps(func)
+        def wrapper(self):
+            self.options.set_preference(key, value)
+            return func(self)
+        return wrapper
+    return decorator
 
 @dd
 def ua_generator():
@@ -17,43 +28,13 @@ class FirefoxOptions:
         self.options = webdriver.FirefoxOptions()
 
     @dd
-    def user_agent_generator(self):
-        """Generate fake user-agent"""
-        self.options.set_preference("general.useragent.override", ua_generator())
-
-    @dd
-    def disable_webdriver_flag(self):
-        """Disable the webdriver flag"""
-        self.options.set_preference("dom.webdriver.enabled", False)
-
-    @dd
-    def disable_enable_automation_switches(self):
-        """Exclude enable-automation switches"""
-        self.options.set_preference("devtools.jsonview.enabled", False)
-
-    @dd
-    def disable_user_automation_extension(self):
-        """Disable userAutomationExtension"""
-        self.options.set_preference("extensions.legacy.enabled", False)
-
-    @dd
-    def disable_webnotifications_switches(self):
-        """Disable web notification"""
-        self.options.set_preference("devtools.dom.webnotifications.enabled", False)
-
-    @dd
-    def disable_browser_volume(self):
-        """Disable browser volume"""
-        self.options.set_preference("media.volume_scale", "0.0")
-
-    @dd
+    @options_decorator("media.volume_scale", "0.0")
+    @options_decorator("dom.webdriver.enabled", False)
+    @options_decorator("devtools.jsonview.enabled", False)
+    @options_decorator("extensions.legacy.enabled", False)
+    @options_decorator("general.useragent.override", ua_generator())
+    @options_decorator("devtools.dom.webnotifications.enabled", False)
     def get_browser(self):
-        self.user_agent_generator()
-        self.disable_webdriver_flag()
-        self.disable_browser_volume()
-        self.disable_enable_automation_switches()
-        self.disable_user_automation_extension()
-        self.disable_webnotifications_switches()
         driver = self.webdriver.Firefox(options=self.options)
         driver.execute_script("Object.defineProperty(navigator, 'webdriver', {get: () => undefined})")
         driver.maximize_window()
