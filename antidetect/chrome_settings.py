@@ -1,8 +1,10 @@
 from fake_useragent import UserAgent
 from selenium_stealth import stealth
 from selenium import webdriver
+from core.debug import debug
 
 
+@debug
 def ua_generator():
     """Generate random fake user-agent"""
     ua = UserAgent(browsers=["chrome"])
@@ -14,41 +16,42 @@ class ChromeOptions:
         self.webdriver = webdriver
         self.options = webdriver.ChromeOptions()
 
+    @debug
     def user_agent_generator(self):
         """Generate fake user-agent"""
-        print("Generate random user-agent")
         self.options.add_argument("user-agent=" + ua_generator())
 
+    @debug
     def disable_browser_volume(self):
         """Disable browser volume"""
-        print("Switch off browser volume")
         self.options.add_argument("--mute-audio")
 
+    @debug
     def browser_start_maximized(self):
         """Open browser to full screen"""
-        print("Open browser to full screen")
         self.options.add_argument("start-maximized")
 
+    @debug
     def disable_browser_notifications(self):
         """Disable browser notification"""
-        print("Disable browser notifications")
         self.options.add_argument("--disable-notifications")
 
+    @debug
     def disable_automation_control(self):
         """Disable the AutomationControlled flag"""
-        print("Switch off the AutomationControlled flag")
         self.options.add_argument("--disable-blink-features=AutomationControlled")
 
+    @debug
     def disable_enable_automation_switches(self):
         """Exclude enable-automation switches"""
-        print("Switch off enable-automation switches")
         self.options.add_experimental_option("excludeSwitches", ["enable-automation"])
 
+    @debug
     def disable_user_automation_extension(self):
         """Disable userAutomationExtension"""
-        print("Switch off userAutomationExtension")
         self.options.add_experimental_option("useAutomationExtension", False)
 
+    @debug
     def get_browser(self):
         self.user_agent_generator()
         self.disable_browser_volume()
